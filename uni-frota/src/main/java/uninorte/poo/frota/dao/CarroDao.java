@@ -22,10 +22,32 @@ public class CarroDao {
 		return session.createQuery("from Carro", Carro.class).list();
 	}
 	
-	public void deleta(Carro carro) { }
+	public Carro recuperaPorCod(long cod) {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()){
+			return session.get(Carro.class, cod);
+		}
+	}
+
+	public void deleta(Carro carro) {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()){
+			session.beginTransaction();
+			session.delete(carro);
+			session.getTransaction().commit();
+		}
+	}
 	
-	public void update(Carro carro) { }
+	public void update(Carro carro) {
+        Carro novoCarro = recuperaPorCod(carro.getCod());
+        if (novoCarro == null) novoCarro = new Carro();
+        novoCarro.setCor(carro.getCor());
+        novoCarro.setPlaca(carro.getPlaca());
+
+		try (Session session = HibernateUtil.getSessionFactory().openSession()){
+			session.beginTransaction();
+			session.saveOrUpdate(carro);
+			session.getTransaction().commit();
+		}
+	}
 	
-	public Carro recuperaPorCod(long cod) { return null; }
 
 }

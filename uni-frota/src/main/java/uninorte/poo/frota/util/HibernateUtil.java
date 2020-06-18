@@ -9,7 +9,6 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
 import uninorte.poo.frota.modelo.Carro;
-import uninorte.poo.frota.modelo.Cliente;
 
 public class HibernateUtil {
 	
@@ -22,10 +21,10 @@ public class HibernateUtil {
 				Properties prop = new Properties();
 /**				//mysql
 				prop.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
-				prop.put(Environment.URL, "jdbc:mysql://localhost:3306/frota");
+				prop.put(Environment.URL, "jdbc:mysql://localhost:3306/frota?useTimezone=true&amp;serverTimezone=UTC");
 				prop.put(Environment.USER, "root");
-				prop.put(Environment.PASS, "mysql/root");
-				prop.put(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
+				prop.put(Environment.PASS, "");
+				prop.put(Environment.DIALECT, "org.hibernate.dialect.MySQLInnoDBDialect");
 */				
  				//postgresql
 				prop.put(Environment.DRIVER, "org.postgresql.Driver");
@@ -34,13 +33,12 @@ public class HibernateUtil {
 				prop.put(Environment.PASS, "");
 				prop.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");
 
-				prop.put(Environment.SHOW_SQL, "true");
+				prop.put(Environment.SHOW_SQL, "false");
 				prop.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-				prop.put(Environment.HBM2DDL_AUTO, "update");
+				prop.put(Environment.HBM2DDL_AUTO, "create-drop");
 				conf.setProperties(prop);
 				
 				conf.addAnnotatedClass(Carro.class);
-				conf.addAnnotatedClass(Cliente.class);
 
 				ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 						.applySettings(conf.getProperties()).build();
